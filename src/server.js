@@ -8,6 +8,10 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 
+app.get('/', (req, res) => {
+  res.json({ result: 'IT IS OKAY' })
+})
+
 app.post('/generate-pdf', (req, res) => {
   const { name,
     value,
