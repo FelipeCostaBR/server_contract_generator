@@ -6,11 +6,5 @@
       "src": "server/src/server.js",
       "use": "@vercel/node"
     }
-  ],
-  "routes": [
-    {
-      "src": "/generate-pdf",
-      "dest": "/server/src/server.js"
-    }
   ]
 }
