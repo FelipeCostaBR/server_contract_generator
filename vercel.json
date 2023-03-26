@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "server_contract_generator",
+  "builds": [
+    {
+      "src": "server/src/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/generate-pdf",
+      "dest": "/server/src/server.js"
+    }
+  ]
+}
