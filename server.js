@@ -8,6 +8,8 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 
+const PORT = process.env.PORT || 3333;
+
 app.get('/', (req, res) => {
   res.json({ result: 'IT IS OKAY' })
 })
@@ -51,4 +53,6 @@ app.post('/generate-pdf', (req, res) => {
   });
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
+});
