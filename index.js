@@ -58,8 +58,7 @@ app.post('/generate-pdf', async (req, res) => {
     await page.setContent(replacedHtml, { waitUntil: 'networkidle0' });
     const pdfBuffer = await page.pdf({
       format: 'A4',
-      printBackground: true,
-      margin: { top: '1cm', right: '1cm', bottom: '1cm', left: '1cm' },
+      printBackground: true
     });
 
     res.setHeader('Content-Type', 'application/pdf');
