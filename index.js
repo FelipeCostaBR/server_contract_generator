@@ -1,7 +1,9 @@
 import express from 'express';
 import fs from 'fs';
 import cors from 'cors'
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chrome from 'chrome-aws-lambda';
+
 import moment from 'moment';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -46,8 +48,11 @@ app.post('/generate-pdf', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: chrome.args,
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless,
     });
+
     const page = await browser.newPage();
 
     await page.setContent(replacedHtml, { waitUntil: 'networkidle0' });
