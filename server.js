@@ -8,9 +8,7 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 
-const PORT = process.env.PORT || 3333;
-
-app.get('/', (req, res) => {
+app.get('/home', (req, res) => {
   res.json({ result: 'IT IS OKAY' })
 })
 
@@ -53,6 +51,7 @@ app.post('/generate-pdf', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}!`);
+const port = process.env.PORT || 3333;
+app.listen(port, () => {
+  console.log(`App listening on port ${port}!`);
 });
