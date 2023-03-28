@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs';
 import cors from 'cors'
-import pdf from 'html-pdf';
+import puppeteer from 'puppeteer';
 import moment from 'moment';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json())
 app.use(cors())
 
-app.post('/generate-pdf', (req, res) => {
+app.post('/generate-pdf', async (req, res) => {
   const { name,
     value,
     vehicle,
@@ -44,12 +44,28 @@ app.post('/generate-pdf', (req, res) => {
     .replace(/\{\{base64Image2\}\}/g, base64Image2)
     .replace(/\{\{base64Image1\}\}/g, base64Image1)
 
-  pdf.create(replacedHtml).toStream((err, stream) => {
-    if (err) return res.sendStatus(500);
+  try {
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+    const page = await browser.newPage();
+
+    await page.setContent(replacedHtml, { waitUntil: 'networkidle0' });
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: { top: '1cm', right: '1cm', bottom: '1cm', left: '1cm' },
+    });
+
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="terms_conditions_${name}_${today}.pdf"`);
-    stream.pipe(res);
-  });
+    res.send(pdfBuffer);
+
+    await browser.close();
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
 });
 
 const port = process.env.PORT || 3030;

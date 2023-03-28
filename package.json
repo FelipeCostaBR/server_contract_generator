@@ -22,7 +22,8 @@
     "fs": "^0.0.1-security",
     "html-pdf": "^3.0.1",
     "moment": "^2.29.4",
-    "pdfkit": "^0.13.0"
+    "pdfkit": "^0.13.0",
+    "puppeteer": "^19.8.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
